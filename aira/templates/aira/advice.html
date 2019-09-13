@@ -131,9 +131,6 @@
 
 {% block extrajs %}
          <script type="text/javascript">
-          function make_coords(coord) {
-              return parseFloat(coord.replace(",","."));
-            };
              map = new OpenLayers.Map('field_map',
                    {units: 'm',
                     displayProjection: 'EPSG:4326',
@@ -171,7 +168,7 @@
              );
              map.addLayers([googleMaps, ktimatologio, cycle, kml]);
 
-             var fieldloc = new OpenLayers.LonLat(make_coords("{{ f.location.x }}"), make_coords("{{ f.location.y }}")).transform('EPSG:4326', 'EPSG:3857');
+             var fieldloc = new OpenLayers.LonLat({{ f.location.x }}, {{ f.location.y }}).transform("EPSG:4326", "EPSG:3857")
              var marker = new OpenLayers.Marker(fieldloc)
              var markers = new OpenLayers.Layer.Markers( "{{ f.name }}" );
              map.addLayer(markers);

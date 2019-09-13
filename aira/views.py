@@ -162,11 +162,21 @@ class AdvicePageView(TemplateView):
         # Load data paths
         f = Agrifield.objects.get(pk=self.kwargs["pk"])
         f.can_edit(self.request.user)
+
+        # This is a voodoo fix that should go away when we go to Leaflet and
+        # cleanup all this part.
+        f.location.transform("EPSG:4326")
+
         context["f"] = f
         if not agripoint_in_raster(f):
             return context
         context["fpars"] = get_parameters(f)
         f.results = model_results(f)
+
+        # This is a voodoo fix that should go away when we go to Leaflet and
+        # cleanup all this part.
+        f.location.transform("EPSG:4326")
+
         return context
 
 
@@ -261,6 +271,12 @@ class UpdateAgrifield(UpdateView):
         context = super(UpdateAgrifield, self).get_context_data(**kwargs)
         afieldobj = Agrifield.objects.get(pk=self.kwargs["pk"])
         afieldobj.can_edit(self.request.user)
+
+        # These are a voodoo fix that should go away when we go to Leaflet and
+        # cleanup all this part.
+        afieldobj.location.transform("EPSG:4326")
+        self.object.location.transform("EPSG:4326")
+
         context["agrifield_user"] = afieldobj.owner
         if agripoint_in_raster(afieldobj):
             context["default_parms"] = get_default_db_value(afieldobj)
