@@ -94,6 +94,9 @@
 
 {% block extrajs %}
             <script>
+                function to_number(astr) {
+                return parseFloat(astr.replace(",","."));
+                };
                 map = new OpenLayers.Map('on_clink_map',
                       {units: 'm',
                        displayProjection: 'EPSG:4326',
@@ -136,7 +139,7 @@
                 map.addLayer(kml);
 
                 //alert(parseFloat("{{ object.longitude }}".replace(",",".")));
-                var fieldloc = new OpenLayers.LonLat({{ object.location.x }}, {{ object.location.y }}).transform("EPSG:4326", "EPSG:3857")
+                var fieldloc = new OpenLayers.LonLat(to_number("{{ object.location.x }}"), to_number("{{ object.location.y }}")).transform("EPSG:4326", "EPSG:3857")
                 var marker = new OpenLayers.Marker(fieldloc)
                 var markers = new OpenLayers.Layer.Markers( "{{ object.name }}" );
                 map.addLayer(markers);

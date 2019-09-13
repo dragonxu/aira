@@ -131,6 +131,9 @@
 
 {% block extrajs %}
          <script type="text/javascript">
+             function to_number(astr) {
+               return parseFloat(astr.replace(",","."));
+             };
              map = new OpenLayers.Map('field_map',
                    {units: 'm',
                     displayProjection: 'EPSG:4326',
@@ -168,7 +171,7 @@
              );
              map.addLayers([googleMaps, ktimatologio, cycle, kml]);
 
-             var fieldloc = new OpenLayers.LonLat({{ f.location.x }}, {{ f.location.y }}).transform("EPSG:4326", "EPSG:3857")
+             var fieldloc = new OpenLayers.LonLat(to_number("{{ f.location.x }}"), to_number("{{ f.location.y }}")).transform("EPSG:4326", "EPSG:3857")
              var marker = new OpenLayers.Marker(fieldloc)
              var markers = new OpenLayers.Layer.Markers( "{{ f.name }}" );
              map.addLayer(markers);
